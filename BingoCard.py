@@ -5,10 +5,10 @@ import random
 
 card_string = 'bingocard'
 random_string = str(hash(card_string)) # 出力されたランダムな整数を文字列に変換
-print(random_string)
+print(random_string)# ランダムな文字列をターミナルに表示
 hash_value = hashlib.md5(random_string.encode()).hexdigest() # ランダムな文字列をMD5ハッシュ値に変換
 random.seed(hash_value) # MD5ハッシュ値をランダムシードに設定
-print(hash_value)
+print(hash_value)# MD5ハッシュ値をターミナルに表示
 
 # リスト
 list_B = list(range(1, 16))
@@ -22,7 +22,7 @@ bingo_N = random.sample(list_N, 4)
 bingo_G = random.sample(list_G, 5)
 bingo_O = random.sample(list_O, 5)
 
-# リーチ、ビンゴフラグ
+# リーチ・ビンゴフラグ
 bB1 = bB2 = bB3 = bB4 = bB5 = B_reach = B_bingo = False
 bI1 = bI2 = bI3 = bI4 = bI5 = I_reach = I_bingo = False
 bN1 = bN2 = bN3 = bN4 = bN5 = N_reach = N_bingo = False
@@ -32,7 +32,7 @@ row1_reach = row2_reach = row3_reach = row4_reach = row5_reach = False
 row1_bingo = row2_bingo = row3_bingo = row4_bingo = row5_bingo = False
 slash_reach = slash_bingo  =  backslash_reach = backslash_bingo = False
 
-# リーチ、ビンゴ数カウント
+# リーチ・ビンゴカウント
 reach_count = 0
 bingo_count = 0
 
@@ -41,9 +41,12 @@ root = tk.Tk()
 root.title('BingoCard')
 root.geometry('400x550')
 root.resizable(False, False)
+
+# 各フォントサイズ
 button_font_size = 50
 label_font_size = 60
 reach_bingo_font_size = 18
+management_number_font_size = 9
 
 # B列
 label_B = tk.Label(root, text='B', font=('', label_font_size), pady=20).grid(column=0, row=0)
@@ -140,7 +143,7 @@ button_O5 = tk.Button(root, text=bingo_O[4], command=lambda : open(button_O5), f
 button_O5.grid(column=4, row=5)
 
 
-# リーチ、ビンゴ数カウンターラベル
+# リーチ・ビンゴカウンターラベル
 reach_label = tk.Label(root, text=' リーチ：', font=('', reach_bingo_font_size), pady=20).grid(column=0, row=6)
 
 reach_count_label = tk.Label(root, text='', font=('', reach_bingo_font_size), pady=20)
@@ -151,15 +154,17 @@ bingo_label = tk.Label(root, text=' ビンゴ：', font=('', reach_bingo_font_si
 bingo_count_label = tk.Label(root, text='', font=('', reach_bingo_font_size), pady=20)
 bingo_count_label.grid(column=3, row=6)
 
+# 管理番号ラベル
+management_number_label = tk.Label(root, text='管理番号：'+random_string, font=('', management_number_font_size)).place(x=105, y=0)
 
 # 伸縮比率
 root.columnconfigure([0,1,2,3,4], weight=1)
-root.rowconfigure([0,1,2,3,4,5,6], weight=1)
+root.rowconfigure([0,1,2,3,4,5,6,7], weight=1)
 
 
-# ボタン、リーチ、ビンゴ処理
+# ボタン、リーチ・ビンゴ処理
 def open(self):
-    # リーチ、ビンゴフラグ呼び出し
+    # リーチ・ビンゴフラグ呼び出し
     global bB1, bB2, bB3, bB4, bB5, B_reach, B_bingo
     global bI1, bI2, bI3, bI4, bI5, I_reach, I_bingo
     global bN1, bN2, bN3, bN4, bN5, N_reach, N_bingo
@@ -169,7 +174,7 @@ def open(self):
     global row1_bingo, row2_bingo, row3_bingo, row4_bingo, row5_bingo
     global slash_reach, slash_bingo, backslash_reach, backslash_bingo
 
-    # リーチ、ビンゴ数カウント呼び出し
+    # リーチ・ビンゴカウント呼び出し
     global reach_count, bingo_count
 
     # ボタン（マス）を無効化し、黒くする
@@ -233,7 +238,7 @@ def open(self):
         elif self == button_O5:
             bO5 = True
 
-    # B列リーチ、ビンゴ
+    # B列リーチ・ビンゴ
     if all((bB2, bB3, bB4, bB5 == True))and bB1 == False or all(
     (bB1, bB3, bB4, bB5 == True)) and bB2 == False or all(
     (bB1, bB2, bB4, bB5 == True)) and bB3 == False or all(
@@ -247,7 +252,7 @@ def open(self):
             B_bingo = True
             bingo()
 
-    # I列リーチ、ビンゴ
+    # I列リーチ・ビンゴ
     if all((bI2, bI3, bI4, bI5 == True))and bI1 == False or all(
     (bI1, bI3, bI4, bI5 == True)) and bI2 == False or all(
     (bI1, bI2, bI4, bI5 == True)) and bI3 == False or all(
@@ -261,7 +266,7 @@ def open(self):
             I_bingo = True
             bingo()
 
-    # N列リーチ、ビンゴ
+    # N列リーチ・ビンゴ
     if all((bN2, bN3, bN4, bN5 == True))and bN1 == False or all(
     (bN1, bN3, bN4, bN5 == True)) and bN2 == False or all(
     (bN1, bN2, bN4, bN5 == True)) and bN3 == False or all(
@@ -275,7 +280,7 @@ def open(self):
             N_bingo = True
             bingo()
 
-    # G列リーチ、ビンゴ
+    # G列リーチ・ビンゴ
     if all((bG2, bG3, bG4, bG5 == True))and bG1 == False or all(
     (bG1, bG3, bG4, bG5 == True)) and bG2 == False or all(
     (bG1, bG2, bG4, bG5 == True)) and bG3 == False or all(
@@ -289,7 +294,7 @@ def open(self):
             G_bingo = True
             bingo()
 
-    # O列リーチ、ビンゴ
+    # O列リーチ・ビンゴ
     if all((bO2, bO3, bO4, bO5 == True))and bO1 == False or all(
     (bO1, bO3, bO4, bO5 == True)) and bO2 == False or all(
     (bO1, bO2, bO4, bO5 == True)) and bO3 == False or all(
@@ -304,7 +309,7 @@ def open(self):
             bingo()
 
 
-    # 横1行目リーチ、ビンゴ
+    # 横1行目リーチ・ビンゴ
     if all((bI1, bN1, bG1, bO1 == True))and bB1 == False or all(
     (bB1, bN1, bG1, bO1 == True)) and bI1 == False or all(
     (bB1, bI1, bG1, bO1 == True)) and bN1 == False or all(
@@ -318,7 +323,7 @@ def open(self):
             row1_bingo = True
             bingo()
 
-    # 横2行目リーチ、ビンゴ
+    # 横2行目リーチ・ビンゴ
     if all((bI2, bN2, bG2, bO2 == True))and bB2 == False or all(
     (bB2, bN2, bG2, bO2 == True)) and bI2 == False or all(
     (bB2, bI2, bG2, bO2 == True)) and bN2 == False or all(
@@ -332,7 +337,7 @@ def open(self):
             row2_bingo = True
             bingo()
 
-    # 横3行目リーチ、ビンゴ
+    # 横3行目リーチ・ビンゴ
     if all((bI3, bN3, bG3, bO3 == True))and bB3 == False or all(
     (bB3, bN3, bG3, bO3 == True)) and bI3 == False or all(
     (bB3, bI3, bG3, bO3 == True)) and bN3 == False or all(
@@ -346,7 +351,7 @@ def open(self):
             row3_bingo = True
             bingo()
 
-    # 横4行目リーチ、ビンゴ
+    # 横4行目リーチ・ビンゴ
     if all((bI4, bN4, bG4, bO4 == True))and bB4 == False or all(
     (bB4, bN4, bG4, bO4 == True)) and bI4 == False or all(
     (bB4, bI4, bG4, bO4 == True)) and bN4 == False or all(
@@ -360,7 +365,7 @@ def open(self):
             row4_bingo = True
             bingo()
 
-    # 横5行目リーチ、ビンゴ
+    # 横5行目リーチ・ビンゴ
     if all((bI5, bN5, bG5, bO5 == True))and bB5 == False or all(
     (bB5, bN5, bG5, bO5 == True)) and bI5 == False or all(
     (bB5, bI5, bG5, bO5 == True)) and bN5 == False or all(
@@ -374,7 +379,7 @@ def open(self):
             row5_bingo = True
             bingo()
 
-    # 斜め左下がり（スラッシュ / ）リーチ、ビンゴ
+    # 斜め左下がり（スラッシュ / ）リーチ・ビンゴ
     if all((bO1, bG2, bN3, bI4 == True))and bB5 == False or all(
     (bB5, bN3, bG2, bO1 == True)) and bI4 == False or all(
     (bB5, bI4, bG2, bO1 == True)) and bN3 == False or all(
@@ -388,7 +393,7 @@ def open(self):
             slash_bingo = True
             bingo()
 
-    # 斜め右下がり（バックスラッシュ \ ）リーチ、ビンゴ
+    # 斜め右下がり（バックスラッシュ \ ）リーチ・ビンゴ
     if all((bI2, bN3, bG4, bO5 == True))and bB1 == False or all(
     (bB1, bN3, bG4, bO5 == True)) and bI2 == False or all(
     (bB1, bI2, bG4, bO5 == True)) and bN3 == False or all(
@@ -408,14 +413,14 @@ def open(self):
         root.destroy()
 
 
-# リーチウィンドウとリーチ数カウント
+# リーチウィンドウとリーチ数をカウント
 def reach():
     global reach_count
     ms.showinfo('BINGO', 'リーチです！')
     reach_count += 1
     reach_count_label['text'] = reach_count
 
-# ビンゴウィンドウとビンゴ数カウント
+# ビンゴウィンドウとビンゴ数をカウント
 def bingo():
     global bingo_count
     ms.showinfo('BINGO','ビンゴです！')
