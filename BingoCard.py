@@ -28,6 +28,9 @@ bI1 = bI2 = bI3 = bI4 = bI5 = I_reach = I_bingo = False
 bN1 = bN2 = bN3 = bN4 = bN5 = N_reach = N_bingo = False
 bG1 = bG2 = bG3 = bG4 = bG5 = G_reach = G_bingo = False
 bO1 = bO2 = bO3 = bO4 = bO5 = O_reach = O_bingo = False
+row1_reach = row2_reach = row3_reach = row4_reach = row5_reach = False
+row1_bingo = row2_bingo = row3_bingo = row4_bingo = row5_bingo = False
+slash_reach = slash_bingo  =  backslash_reach = backslash_bingo = False
 
 # リーチ、ビンゴ数カウント
 reach_count = 0
@@ -60,6 +63,7 @@ button_B4.grid(column=0, row=4)
 button_B5 = tk.Button(root, text=bingo_B[4], command=lambda : open(button_B5), font=('', button_font_size))
 button_B5.grid(column=0, row=5)
 
+
 # I列
 label_I = tk.Label(root, text='I', font=('', label_font_size)).grid(column=1, row=0)
 
@@ -77,6 +81,7 @@ button_I4.grid(column=1, row=4)
 
 button_I5 = tk.Button(root, text=bingo_I[4], command=lambda : open(button_I5), font=('', button_font_size))
 button_I5.grid(column=1, row=5)
+
 
 # N列
 label_N = tk.Label(root, text='N', font=('', label_font_size)).grid(column=2, row=0)
@@ -96,6 +101,7 @@ button_N4.grid(column=2, row=4)
 button_N5 = tk.Button(root, text=bingo_N[3], command=lambda : open(button_N5), font=('', button_font_size))
 button_N5.grid(column=2, row=5)
 
+
 # G列
 label_G = tk.Label(root, text='G', font=('', label_font_size)).grid(column=3, row=0)
 
@@ -113,6 +119,7 @@ button_G4.grid(column=3, row=4)
 
 button_G5 = tk.Button(root, text=bingo_G[4], command=lambda : open(button_G5), font=('', button_font_size))
 button_G5.grid(column=3, row=5)
+
 
 # O列
 label_O = tk.Label(root, text='O', font=('', label_font_size)).grid(column=4, row=0)
@@ -132,82 +139,99 @@ button_O4.grid(column=4, row=4)
 button_O5 = tk.Button(root, text=bingo_O[4], command=lambda : open(button_O5), font=('', button_font_size))
 button_O5.grid(column=4, row=5)
 
+
+# リーチ、ビンゴ数カウンターラベル
 reach_label = tk.Label(root, text=' リーチ：', font=('', reach_bingo_font_size), pady=20).grid(column=0, row=6)
+
 reach_count_label = tk.Label(root, text='', font=('', reach_bingo_font_size), pady=20)
 reach_count_label.grid(column=1, row=6)
+
 bingo_label = tk.Label(root, text=' ビンゴ：', font=('', reach_bingo_font_size), pady=20).grid(column=2, row=6)
+
 bingo_count_label = tk.Label(root, text='', font=('', reach_bingo_font_size), pady=20)
 bingo_count_label.grid(column=3, row=6)
+
 
 # 伸縮比率
 root.columnconfigure([0,1,2,3,4], weight=1)
 root.rowconfigure([0,1,2,3,4,5,6], weight=1)
 
+
 # ボタン、リーチ、ビンゴ処理
 def open(self):
-    global bB1,bB2,bB3,bB4,bB5,B_reach,B_bingo
-    global bI1,bI2,bI3,bI4,bI5,I_reach,I_bingo
-    global bN1,bN2,bN3,bN4,bN5,N_reach,N_bingo
-    global bG1,bG2,bG3,bG4,bG5,G_reach,G_bingo
-    global bO1,bO2,bO3,bO4,bO5,O_reach,O_bingo
+    # リーチ、ビンゴフラグ呼び出し
+    global bB1, bB2, bB3, bB4, bB5, B_reach, B_bingo
+    global bI1, bI2, bI3, bI4, bI5, I_reach, I_bingo
+    global bN1, bN2, bN3, bN4, bN5, N_reach, N_bingo
+    global bG1, bG2, bG3, bG4, bG5, G_reach, G_bingo
+    global bO1, bO2, bO3, bO4, bO5, O_reach, O_bingo
+    global row1_reach, row2_reach, row3_reach, row4_reach, row5_reach
+    global row1_bingo, row2_bingo, row3_bingo, row4_bingo, row5_bingo
+    global slash_reach, slash_bingo, backslash_reach, backslash_bingo
 
+    # リーチ、ビンゴ数カウント呼び出し
+    global reach_count, bingo_count
+
+    # ボタン（マス）を無効化し、黒くする
     self['state'] = 'disabled'
     self['bg'] = 'black'
 
-    if button_B1['state'] == 'disabled':
-        bB1 = True
-    if button_B2['state'] == 'disabled':
-        bB2 = True
-    if button_B3['state'] == 'disabled':
-        bB3 = True
-    if button_B4['state'] == 'disabled':
-        bB4 = True
-    if button_B5['state'] == 'disabled':
-        bB5 = True
+    # 各マスが開いているか管理
+    if self['state'] == 'disabled':
+        if self == button_B1:
+            bB1 = True
+        elif self == button_B2:
+            bB2 = True
+        elif self == button_B3:
+            bB3 = True
+        elif self == button_B4:
+            bB4 = True
+        elif self == button_B5:
+            bB5 = True
 
-    if button_I1['state'] == 'disabled':
-        bI1 = True
-    if button_I2['state'] == 'disabled':
-        bI2 = True
-    if button_I3['state'] == 'disabled':
-        bI3 = True
-    if button_I4['state'] == 'disabled':
-        bI4 = True
-    if button_I5['state'] == 'disabled':
-        bI5 = True
+        elif self == button_I1:
+            bI1 = True
+        elif self == button_I2:
+            bI2 = True
+        elif self == button_I3:
+            bI3 = True
+        elif self == button_I4:
+            bI4 = True
+        elif self == button_I5:
+            bI5 = True
 
-    if button_N1['state'] == 'disabled':
-        bN1 = True
-    if button_N2['state'] == 'disabled':
-        bN2 = True
-    if button_N3['state'] == 'disabled':
-        bN3 = True
-    if button_N4['state'] == 'disabled':
-        bN4 = True
-    if button_N5['state'] == 'disabled':
-        bN5 = True
+        elif self == button_N1:
+            bN1 = True
+        elif self == button_N2:
+            bN2 = True
+        elif self == button_N3:
+            bN3 = True
+        elif self == button_N4:
+            bN4 = True
+        elif self == button_N5:
+            bN5 = True
 
-    if button_G1['state'] == 'disabled':
-        bG1 = True
-    if button_G2['state'] == 'disabled':
-        bG2 = True
-    if button_G3['state'] == 'disabled':
-        bG3 = True
-    if button_G4['state'] == 'disabled':
-        bG4 = True
-    if button_G5['state'] == 'disabled':
-        bG5 = True
+        elif self == button_G1:
+            bG1 = True
+        elif self == button_G2:
+            bG2 = True
+        elif self == button_G3:
+            bG3 = True
+        elif self == button_G4:
+            bG4 = True
+        elif self == button_G5:
+            bG5 = True
 
-    if button_O1['state'] == 'disabled':
-        bO1 = True
-    if button_O2['state'] == 'disabled':
-        bO2 = True
-    if button_O3['state'] == 'disabled':
-        bO3 = True
-    if button_O4['state'] == 'disabled':
-        bO4 = True
-    if button_O5['state'] == 'disabled':
-        bO5 = True
+        elif self == button_O1:
+            bO1 = True
+        elif self == button_O2:
+            bO2 = True
+        elif self == button_O3:
+            bO3 = True
+        elif self == button_O4:
+            bO4 = True
+        elif self == button_O5:
+            bO5 = True
 
     # B列リーチ、ビンゴ
     if all((bB2, bB3, bB4, bB5 == True))and bB1 == False or all(
@@ -279,18 +303,124 @@ def open(self):
             O_bingo = True
             bingo()
 
-# リーチウィンドウ
+
+    # 横1行目リーチ、ビンゴ
+    if all((bI1, bN1, bG1, bO1 == True))and bB1 == False or all(
+    (bB1, bN1, bG1, bO1 == True)) and bI1 == False or all(
+    (bB1, bI1, bG1, bO1 == True)) and bN1 == False or all(
+    (bB1, bI1, bN1, bO1 == True)) and bG1 == False or all(
+    (bB1, bI1, bN1, bG1 == True)) and bO1 == False:
+        if row1_reach == False:
+            row1_reach = True
+            reach()
+    elif all((bB1, bI1, bN1, bG1, bO1 == True)):
+        if row1_bingo == False:
+            row1_bingo = True
+            bingo()
+
+    # 横2行目リーチ、ビンゴ
+    if all((bI2, bN2, bG2, bO2 == True))and bB2 == False or all(
+    (bB2, bN2, bG2, bO2 == True)) and bI2 == False or all(
+    (bB2, bI2, bG2, bO2 == True)) and bN2 == False or all(
+    (bB2, bI2, bN2, bO2 == True)) and bG2 == False or all(
+    (bB2, bI2, bN2, bG2 == True)) and bO2 == False:
+        if row2_reach == False:
+            row2_reach = True
+            reach()
+    elif all((bB2, bI2, bN2, bG2, bO2 == True)):
+        if row2_bingo == False:
+            row2_bingo = True
+            bingo()
+
+    # 横3行目リーチ、ビンゴ
+    if all((bI3, bN3, bG3, bO3 == True))and bB3 == False or all(
+    (bB3, bN3, bG3, bO3 == True)) and bI3 == False or all(
+    (bB3, bI3, bG3, bO3 == True)) and bN3 == False or all(
+    (bB3, bI3, bN3, bO3 == True)) and bG3 == False or all(
+    (bB3, bI3, bN3, bG3 == True)) and bO3 == False:
+        if row3_reach == False:
+            row3_reach = True
+            reach()
+    elif all((bB3, bI3, bN3, bG3, bO3 == True)):
+        if row3_bingo == False:
+            row3_bingo = True
+            bingo()
+
+    # 横4行目リーチ、ビンゴ
+    if all((bI4, bN4, bG4, bO4 == True))and bB4 == False or all(
+    (bB4, bN4, bG4, bO4 == True)) and bI4 == False or all(
+    (bB4, bI4, bG4, bO4 == True)) and bN4 == False or all(
+    (bB4, bI4, bN4, bO4 == True)) and bG4 == False or all(
+    (bB4, bI4, bN4, bG4 == True)) and bO4 == False:
+        if row4_reach == False:
+            row4_reach = True
+            reach()
+    elif all((bB4, bI4, bN4, bG4, bO4 == True)):
+        if row4_bingo == False:
+            row4_bingo = True
+            bingo()
+
+    # 横5行目リーチ、ビンゴ
+    if all((bI5, bN5, bG5, bO5 == True))and bB5 == False or all(
+    (bB5, bN5, bG5, bO5 == True)) and bI5 == False or all(
+    (bB5, bI5, bG5, bO5 == True)) and bN5 == False or all(
+    (bB5, bI5, bN5, bO5 == True)) and bG5 == False or all(
+    (bB5, bI5, bN5, bG5 == True)) and bO5 == False:
+        if row5_reach == False:
+            row5_reach = True
+            reach()
+    elif all((bB5, bI5, bN5, bG5, bO5 == True)):
+        if row5_bingo == False:
+            row5_bingo = True
+            bingo()
+
+    # 斜め左下がり（スラッシュ / ）リーチ、ビンゴ
+    if all((bO1, bG2, bN3, bI4 == True))and bB5 == False or all(
+    (bB5, bN3, bG2, bO1 == True)) and bI4 == False or all(
+    (bB5, bI4, bG2, bO1 == True)) and bN3 == False or all(
+    (bB5, bI4, bN3, bO1 == True)) and bG2 == False or all(
+    (bB5, bI4, bN3, bG2 == True)) and bO1 == False:
+        if slash_reach == False:
+            slash_reach = True
+            reach()
+    elif all((bB5, bI4, bN3, bG2, bO1 == True)):
+        if slash_bingo == False:
+            slash_bingo = True
+            bingo()
+
+    # 斜め右下がり（バックスラッシュ \ ）リーチ、ビンゴ
+    if all((bI2, bN3, bG4, bO5 == True))and bB1 == False or all(
+    (bB1, bN3, bG4, bO5 == True)) and bI2 == False or all(
+    (bB1, bI2, bG4, bO5 == True)) and bN3 == False or all(
+    (bB1, bI2, bN3, bO5 == True)) and bG4 == False or all(
+    (bB1, bI2, bN3, bG4 == True)) and bO5 == False:
+        if backslash_reach == False:
+            backslash_reach = True
+            reach()
+    elif all((bB1, bI2, bN3, bG4, bO5 == True)):
+        if backslash_bingo == False:
+            backslash_bingo = True
+            bingo()
+
+    # ビンゴ終了処理
+    if all((reach_count,bingo_count == 12)):
+        ms.showinfo('ビンゴ終了', '全てのマスが開いたため、ビンゴが終了しました。\n 「OK」 を押すとウィンドウが閉じ、カードが廃棄されます。')
+        root.destroy()
+
+
+# リーチウィンドウとリーチ数カウント
 def reach():
     global reach_count
     ms.showinfo('BINGO', 'リーチです！')
     reach_count += 1
     reach_count_label['text'] = reach_count
 
-# ビンゴウィンドウ
+# ビンゴウィンドウとビンゴ数カウント
 def bingo():
     global bingo_count
     ms.showinfo('BINGO','ビンゴです！')
     bingo_count += 1
     bingo_count_label['text'] = bingo_count
 
+# 画面更新
 root.mainloop()
